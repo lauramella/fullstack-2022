@@ -6,7 +6,7 @@ const Person = ({ person }) => {
     )
 } 
 
-const GetContacts = ({ persons, sFilter }) => {
+const Persons = ({ persons, sFilter }) => {
     if (sFilter.length === 0) {
         return persons.map(person => <Person key={person.name} person={person} />)
     }
@@ -16,6 +16,6 @@ const GetContacts = ({ persons, sFilter }) => {
     }
 }
 
-export default GetContacts
+export default Persons
 
 
