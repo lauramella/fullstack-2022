@@ -11,10 +11,10 @@ const App = () => {
 
 
   useEffect(() => {
-    axios.get('https://restcountries.com/v2/all')
+    axios.get(`https://restcountries.com/v2/all`)
       .then(response => {
-        let maat = response.data
-        setCountries(maat)
+        let countries = response.data
+        setCountries(countries)
       })
   }, [])
 
@@ -25,8 +25,6 @@ const App = () => {
     </div>
   );
 }
-//<Countries countries={countries} sFilter={sFilter} />
-//<ListCountry countries={countries} filterName={filterName} setFilterName={setFilterName} />
 
 export default App
 

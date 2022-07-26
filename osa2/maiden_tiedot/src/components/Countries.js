@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React from 'react'
+import Weather from './Weather'
 
 const CountryInfo = ({ country }) => {
     return (
@@ -14,6 +15,7 @@ const CountryInfo = ({ country }) => {
                     <li> {country.name} </li> )}
             </ul>
             <img alt="Flag" src={country.flag} width="200px" />
+            <Weather country={country} />
         </div>       
     )
 }
@@ -32,10 +34,7 @@ const Countries = ({ countries, sFilter, setFilter }) => {
         return <CountryInfo country={countryName[0]} />
     }
 
-
-    return countryName.map(country => <div> {country.name} <button onClick={() => {setFilter(country.name)}}>show</button> </div> )
-    
-   
+    return countryName.map(country => <div> {country.name} <button onClick={() => {setFilter(country.name)}}>show</button></div> )     
 }
 
 export default Countries
