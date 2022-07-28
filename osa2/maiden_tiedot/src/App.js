@@ -9,7 +9,6 @@ const App = () => {
 
   const handleFilter = (event) => setFilter(event.target.value)
 
-
   useEffect(() => {
     axios.get(`https://restcountries.com/v2/all`)
       .then(response => {

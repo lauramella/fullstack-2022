@@ -3,6 +3,7 @@ import axios from 'axios'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
+import contactService from './services/contacts'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -15,10 +16,10 @@ const App = () => {
   const handleFilter = (event) => setSFilter(event.target.value)
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
+    contactService
+      .getAll()
+        .then(initialContacts => {
+        setPersons(initialContacts)
       })
   }, [])
 
@@ -27,15 +28,19 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    
-    if (persons.map((persons) => persons.name).indexOf(newName) !== -1) {
-      alert(`${newName} is already added to phonebook`)
-    } else {
-      setPersons(persons.concat(personObject))
-    }
-  setNewName('')
-  setNewNumber('')
-  }
+
+    contactService
+      .create(personObject)
+        .then(returnedPerson => {  
+          if (persons.map((persons) => persons.name).indexOf(newName) !== -1) {
+            alert(`${newName} is already added to phonebook`)
+          } else {
+            setPersons(persons.concat(personObject))
+            setNewName('')
+            setNewNumber('')
+          } 
+        })
+  }  
 
   return (
     <div>
