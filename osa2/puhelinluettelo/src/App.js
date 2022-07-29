@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
@@ -29,18 +28,36 @@ const App = () => {
       number: newNumber
     }
 
-    contactService
-      .create(personObject)
-        .then(returnedPerson => {  
-          if (persons.map((persons) => persons.name).indexOf(newName) !== -1) {
-            alert(`${newName} is already added to phonebook`)
-          } else {
-            setPersons(persons.concat(personObject))
+    if (persons.map((persons) => persons.name).indexOf(newName) !== -1) {
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        const contact = persons.find(p => p.name === newName)
+        const changedContact = { ...contact, number: newNumber }
+        contactService
+          .update(changedContact.id, changedContact)
+            .then(updatedPerson => {
+              setPersons(persons.map(person => person.id !== changedContact.id ? person : updatedPerson))
+            })
+          }
+      } else {
+      contactService
+        .create(personObject)
+          .then(returnedPerson => {  
+            setPersons(persons.concat(returnedPerson))
             setNewName('')
             setNewNumber('')
-          } 
+          })
+      }
+  }
+
+  const removePerson = (id, name) => {
+    if (window.confirm(`Delete ${name}?`)) {
+      contactService
+        .remove(id)
+        .then(() => {
+          setPersons(persons.filter(person => person.id !== id))
         })
-  }  
+    }
+  }
 
   return (
     <div>
@@ -55,7 +72,7 @@ const App = () => {
             handleNumber={handleNumber} />
       <h2>Numbers</h2>
       <ul>
-      <Persons persons={persons} sFilter={sFilter} />
+      <Persons persons={persons} sFilter={sFilter} handleRemove={removePerson} />
       </ul>
     </div>
   )
