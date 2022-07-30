@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
+import Notification from './components/Notification'
 import PersonForm from './components/PersonForm'
 import contactService from './services/contacts'
 
@@ -9,10 +10,21 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [sFilter, setSFilter] = useState('')
+  const [message, setMessage] = useState(null)
+  const [error, setError] = useState(false)
 
   const handleName = (event) => setNewName(event.target.value)
   const handleNumber = (event) => setNewNumber(event.target.value)
   const handleFilter = (event) => setSFilter(event.target.value)
+
+  const getMessage = (message, isError) => {
+    setMessage(message)
+    setError(isError)
+    setTimeout(() => {
+      setMessage(null)
+      setError(false)
+    }, 10000)
+  }
 
   useEffect(() => {
     contactService
@@ -38,6 +50,7 @@ const App = () => {
               setPersons(persons.map(person => person.id !== changedContact.id ? person : updatedPerson))
             })
           }
+          getMessage(`Updated ${newName}`, false)
       } else {
       contactService
         .create(personObject)
@@ -46,6 +59,7 @@ const App = () => {
             setNewName('')
             setNewNumber('')
           })
+          getMessage(`Added ${newName}`, false)
       }
   }
 
@@ -56,12 +70,14 @@ const App = () => {
         .then(() => {
           setPersons(persons.filter(person => person.id !== id))
         })
+        getMessage(`Removed ${name}`, false)
     }
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} error={error} />
       <Filter sFilter={sFilter} handleFilter={handleFilter} />
       <h2>add a new</h2>
       <PersonForm 
