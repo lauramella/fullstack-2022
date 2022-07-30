@@ -23,7 +23,7 @@ const App = () => {
     setTimeout(() => {
       setMessage(null)
       setError(false)
-    }, 10000)
+    }, 5000)
   }
 
   useEffect(() => {
@@ -46,11 +46,15 @@ const App = () => {
         const changedContact = { ...contact, number: newNumber }
         contactService
           .update(changedContact.id, changedContact)
-            .then(updatedPerson => {
+          .then(updatedPerson => {
               setPersons(persons.map(person => person.id !== changedContact.id ? person : updatedPerson))
+              getMessage(`Updated ${newName}`, false)
             })
-          }
-          getMessage(`Updated ${newName}`, false)
+          .catch(error => {
+              contactService.getAll().then(allPersons => setPersons(allPersons))
+              getMessage(`Information of ${newName} has already been removed from the server`, true)
+            })
+          }       
       } else {
       contactService
         .create(personObject)
@@ -70,9 +74,14 @@ const App = () => {
         .then(() => {
           setPersons(persons.filter(person => person.id !== id))
         })
-        getMessage(`Removed ${name}`, false)
+        .then(getMessage(`Removed ${name}`, false))
+        .catch(error => {
+          getMessage(`Information of ${name} has already been removed from the server`, true)
+          setPersons(persons.filter(person => person.id !== id))
+        })
     }
   }
+
 
   return (
     <div>
