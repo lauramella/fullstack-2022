@@ -1,15 +1,11 @@
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
+import personService from './services/persons'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ]) 
+  const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [sFilter, setFilter] = useState('')
@@ -18,19 +14,41 @@ const App = () => {
   const handleNumber = (event) => setNewNumber(event.target.value)
   const handleFilter = (event) => setFilter(event.target.value)
 
+  useEffect(() => {
+    personService.getAll().then(persons => {
+        setPersons(persons)
+    })
+  }, [])
+
   const addPerson = (event) => {
     event.preventDefault()
-    const double = persons.find(person => person.name === newName)
+    const person = {
+      name: newName,
+      number: newNumber,
+    }
+    setNewName('')
+    setNewNumber('')
+
+    const double = persons.find(p => p.name === newName)
     if (double) {
-      window.alert(`${newName} is already added to phonebook`);
-    } else {
-      const person = {
-        name: newName,
-        number: newNumber,
+      if (window.confirm(`${newName} is already added to phonebook, update the number?`)) {
+        personService.update(double.id, {...double, number: newNumber }).then(updatedPerson => {
+          setPersons(persons.map(p => p.id === double.id ? updatedPerson : p ))
+        })
+        return 
       }
-      setPersons(persons.concat(person))
-      setNewName('')
-      setNewNumber('')
+    }
+    personService.create(person).then(newPerson => {  
+      setPersons(persons.concat(newPerson))
+    })
+  }
+
+
+  const deletePerson = (id, name) => {
+    if (window.confirm(`Delete ${name}?`)) {
+      personService.remove(id).then(() => {
+          setPersons(persons.filter(person => person.id !== id))
+        })        
     }
   }
 
@@ -47,15 +65,10 @@ const App = () => {
             handleNumber={handleNumber} />
       <h2>Numbers</h2>
       <div>
-        <Persons persons={persons} sFilter={sFilter} />
+        <Persons persons={persons} sFilter={sFilter} handleDelete={deletePerson}/>
       </div>
     </div>
   )
-
 }
 
 export default App
-
-/*//{persons.map(person =>
-          //<Persons key={person.name} person={person} />
-        )}*/
