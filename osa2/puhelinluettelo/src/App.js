@@ -5,6 +5,8 @@ import Filter from './components/Filter'
 import personService from './services/persons'
 import Notification from './components/Notification'
 
+
+
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
@@ -54,7 +56,10 @@ const App = () => {
     }
     personService.create(person).then(newPerson => {  
       setPersons(persons.concat(newPerson))
-      getNotification(`Added ${newPerson.name}`)
+      getNotification(`Added ${newPerson.name}`, 'notification')
+    }).catch(error => {
+      getNotification(`${error.response.data.error}`, 'error') 
+      console.log(error.response.data)
     })
   }
 
