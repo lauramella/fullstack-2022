@@ -22,8 +22,6 @@ describe('favourite blog', () => {
     { title: 'Blog1', author: 'Unknown', likes: 0 }
   ]
 
-  const emptyList = []
-
   test('when list has many blogs', () => {
     const result = listHelper.favouriteBlog(list1)
     expect(result).toEqual(list1[0])
@@ -38,8 +36,5 @@ describe('favourite blog', () => {
     const result = listHelper.favouriteBlog(list3)
     expect(result).toEqual(list3[0])
   })
-
-
-
 
 })
