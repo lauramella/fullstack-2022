@@ -38,7 +38,7 @@ test('a valid blog can be added ', async () => {
     title: 'async/await simplifies making async calls',
     author: 'Test Author',
     url: 'https://reactpatterns.com/',
-    likes: 0
+    likes: 4
   }
 
   await api
@@ -56,6 +56,26 @@ test('a valid blog can be added ', async () => {
     'async/await simplifies making async calls'
   )
 })
+
+test('blog gets 0 likes if there is no value', async () => {
+  const newBlog = {
+    title: 'Field likes is not defined',
+    author: 'New Author',
+    url: 'https://newauthorwithnolikes.com/'
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd[blogsAtEnd.length - 1].likes).toEqual(0)
+
+})
+
+
 
 afterAll(() => {
   mongoose.connection.close()
