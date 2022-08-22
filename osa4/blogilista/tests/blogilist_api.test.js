@@ -75,7 +75,24 @@ test('blog gets 0 likes if there is no value', async () => {
 
 })
 
+test('blog does not contain title', async () => {
+  const newBlog = {
+    author: 'New Author',
+    url: 'https://blogwithouttitle.com/'
+  }
 
+  await api.post('/api/blogs').send(newBlog).expect(400)
+})
+
+test('blog does not contain url', async () => {
+  const newBlog = {
+    title: 'Blog without url',
+    author: 'New Author',
+    likes: 9
+  }
+
+  await api.post('/api/blogs').send(newBlog).expect(400)
+})
 
 afterAll(() => {
   mongoose.connection.close()
