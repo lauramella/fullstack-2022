@@ -1,11 +1,11 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlVzZXIyIiwiaWQiOiI2MzA1ZTNlNDJiMzdiMWUzZjkwYzUwNjUiLCJpYXQiOjE2NjEzMzc1NDF9.seQjBfNWHpgM3fj_7nZ1id_ZPT4DltW48lFbnxvnOSo
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlVzZXIyIiwiaWQiOiI2MzA1ZTNlNDJiMzdiMWUzZjkwYzUwNjUiLCJpYXQiOjE2NjEzNDY0NTd9.LWouP6gEdOL8eawLdsdexgiWuFCTKTss9loDYaIqhAg
 
     {
         "title": "Token2",
         "author": "Minni Hiiri",
         "url": "...",
-        "likes": 13,
+        "likes": 15,
         "userId": "6305e3e42b37b1e3f90c5065"
     }
