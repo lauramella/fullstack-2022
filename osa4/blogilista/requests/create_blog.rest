@@ -2,8 +2,9 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
     {
-        "title": "Blogi!",
-        "author": "Aku Ankka",
+        "title": "New blog",
+        "author": "Minni Hiiri",
         "url": "...",
-        "likes": 5
+        "likes": 13,
+        "userId": "63049ccfe872f29cbf5970ce"
     }
