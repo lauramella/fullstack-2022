@@ -1,11 +1,11 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer 
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlVzZXIyIiwiaWQiOiI2MzA4YTkxN2U1YjljOTg5MTFiMjVlYzgiLCJpYXQiOjE2NjE1MTIwOTh9.zfl4Fj-SghZG7ehayiLJYnORUNjU1ivocFGsDxc1Rs0
 
     {
-        "title": "Token2",
-        "author": "Minni Hiiri",
+        "title": "New blog",
+        "author": "Mikki Hiiri",
         "url": "...",
-        "likes": 15,
-        "userId": "6305e3e42b37b1e3f90c5065"
+        "likes": 11,
+        "userId": "6308a917e5b9c98911b25ec8"
     }
