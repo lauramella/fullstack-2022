@@ -4,6 +4,7 @@ import loginService from './services/login'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import Blogs from './components/Blogs'
+import NewBlog from './components/NewBlog'
 
 const App = () => {
   const [notification, setNotification] = useState(null)
@@ -47,6 +48,13 @@ const App = () => {
     setUser(null)
   }
 
+  const handleCreate = async (title, author, url) => {
+    blogService.create({ title, author, url, })
+      .then(newBlog => {
+        setBlogs(blogs.concat(newBlog))
+      })
+  }
+
   return (
     <div>
       <Notification notification={notification} />
@@ -59,6 +67,7 @@ const App = () => {
             {user.name} logged in
             <button onClick={handleLogout}>logout</button>
           </p>
+          <NewBlog handleCreate={handleCreate} />
           <Blogs blogs={blogs} />
         </div>
       )}
