@@ -39,7 +39,7 @@ const App = () => {
       window.localStorage.setItem("loggedUser", JSON.stringify(user))
       setUser(user)
     } catch (exception) {
-      getNotification(`wrong credentials`, 'error')
+      getNotification(`wrong username or password`, 'error')
     }
   }
 
@@ -53,6 +53,7 @@ const App = () => {
       .then(newBlog => {
         setBlogs(blogs.concat(newBlog))
       })
+    getNotification(`a new blog ${title} by ${author} added`)
   }
 
   return (
