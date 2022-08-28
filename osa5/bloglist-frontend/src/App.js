@@ -4,7 +4,7 @@ import loginService from './services/login'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import LoginForm from './components/LoginForm'
-import Blogs from './components/Blogs'
+import Blog from './components/Blog'
 import NewBlog from './components/NewBlog'
 
 const App = () => {
@@ -37,25 +37,45 @@ const App = () => {
       const user = await loginService.login({
         username, password,
       })
-      window.localStorage.setItem("loggedUser", JSON.stringify(user))
+      window.localStorage.setItem('loggedUser', JSON.stringify(user))
+      blogService.setToken(user.token)
       setUser(user)
     } catch (exception) {
-      getNotification(`wrong username or password`, 'error')
+      getNotification('wrong username or password', 'error')
     }
   }
 
   const handleLogout = () => {
-    window.localStorage.clear()
     setUser(null)
+    window.localStorage.clear()
   }
 
   const handleCreate = async (title, author, url) => {
-    blogFormRef.current.toggleVisibility();
-    blogService.create({ title, author, url, })
-      .then(newBlog => {
-        setBlogs(blogs.concat(newBlog))
-      })
+    blogFormRef.current.toggleVisibility()
+    const { token } = JSON.parse(
+      window.localStorage.getItem('loggedUser')
+    )
+    blogService.setToken(token)
+    await blogService.create({ title, author, url, user })
+    blogService.getAll().then((blogs) => setBlogs(blogs))
     getNotification(`a new blog ${title} by ${author} added`)
+  }
+
+  const handleLike = async (editedBlog) => {
+    await blogService.edit(editedBlog.id, editedBlog)
+    setBlogs(blogs
+      .map((blog) => {
+        if (blog.id === editedBlog.id) { return editedBlog }
+        return blog
+      })
+      .sort((a, b) => { return b.likes - a.likes })
+    )
+  }
+
+  const handleRemove = async (blog) => {
+    await blogService.remove(blog.id)
+    const blogList = blogs.filter(b => !(b.id === blog.id))
+    setBlogs(blogList)
   }
 
   const blogFormRef = useRef()
@@ -75,7 +95,11 @@ const App = () => {
           <Togglable buttonLabel="new blog" ref={blogFormRef}>
             <NewBlog handleCreate={handleCreate} />
           </Togglable>
-          <Blogs setBlogs={setBlogs} blogs={blogs} user={user} />
+          <div>
+            {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
+              <Blog key={blog.id} blog={blog} user={user} handleLike={handleLike} handleRemove={handleRemove}/>
+            )}
+          </div>
         </div>
       )}
     </div>

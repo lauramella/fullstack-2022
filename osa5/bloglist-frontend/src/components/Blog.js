@@ -1,8 +1,8 @@
 import React from 'react'
 import { useState } from 'react'
-import blogService from '../services/blogs'
+import PropTypes from 'prop-types'
 
-const Blog = ({blog, user, setBlogs}) => {
+const Blog = ({ blog, user, handleLike, handleRemove }) => {
   const [view, setView] = useState(false)
 
   const blogStyle = {
@@ -15,10 +15,13 @@ const Blog = ({blog, user, setBlogs}) => {
 
   const addLike = () => {
     const blogEdited = { ...blog, likes: blog.likes + 1 }
-    blogService.edit(blog.id, blogEdited)
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )
+    handleLike(blogEdited)
+  }
+
+  const removeBlog = () => {
+    if (window.confirm(`delete ${blog.title} ?`)) {
+      handleRemove(blog)
+    }
   }
 
   const toggleView = () => setView(!view)
@@ -26,7 +29,7 @@ const Blog = ({blog, user, setBlogs}) => {
   return (
     <div style={blogStyle}>
       {view === false ? (
-        <div> 
+        <div>
           {blog.title} {blog.author} <button onClick={toggleView}>view</button>
         </div>
       ) : (
@@ -34,12 +37,21 @@ const Blog = ({blog, user, setBlogs}) => {
           <div>{blog.title} {blog.author} <button onClick={toggleView}>hide</button></div>
           <div>{blog.url}</div>
           <div>likes {blog.likes} <button onClick={addLike}>like</button></div>
-          <div>{user.name}</div>
+          <div>{blog.user.name}</div>
+          {blog.user.name === user.name && (
+            <button onClick={removeBlog}>
+              remove
+            </button>
+          )}
         </div>
       )}
     </div>
   )
 }
 
-export default Blog
+Blog.propTypes = {
+  user: PropTypes.object.isRequired,
+  blog: PropTypes.object.isRequired,
+}
 
+export default Blog
