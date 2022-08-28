@@ -1,7 +1,8 @@
 import React from 'react'
-import { useState } from "react"
+import { useState } from 'react'
+import blogService from '../services/blogs'
 
-const Blog = ({blog, user}) => {
+const Blog = ({blog, user, setBlogs}) => {
   const [view, setView] = useState(false)
 
   const blogStyle = {
@@ -10,6 +11,14 @@ const Blog = ({blog, user}) => {
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5
+  }
+
+  const addLike = () => {
+    const blogEdited = { ...blog, likes: blog.likes + 1 }
+    blogService.edit(blog.id, blogEdited)
+    blogService.getAll().then(blogs =>
+      setBlogs(blogs)
+    )
   }
 
   const toggleView = () => setView(!view)
@@ -24,7 +33,7 @@ const Blog = ({blog, user}) => {
         <div>
           <div>{blog.title} {blog.author} <button onClick={toggleView}>hide</button></div>
           <div>{blog.url}</div>
-          <div>likes {blog.likes} <button>like</button></div>
+          <div>likes {blog.likes} <button onClick={addLike}>like</button></div>
           <div>{user.name}</div>
         </div>
       )}
