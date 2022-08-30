@@ -33,7 +33,7 @@ const Blog = ({ blog, user, handleLike, handleRemove }) => {
           {blog.title} {blog.author} <button onClick={toggleView}>view</button>
         </div>
       ) : (
-        <div>
+        <div className='additionalInfo'>
           <div>{blog.title} {blog.author} <button onClick={toggleView}>hide</button></div>
           <div>{blog.url}</div>
           <div>likes {blog.likes} <button onClick={addLike}>like</button></div>
