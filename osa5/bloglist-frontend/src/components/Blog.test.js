@@ -15,10 +15,12 @@ describe('Blog', () => {
     }
   }
 
-  let testUser = {}
+  const mockUser = {}
+  const mockLikeHandle = jest.fn()
+
 
   beforeEach(() => {
-    component = render(<Blog blog={blog} user={testUser} />)
+    component = render(<Blog blog={blog} user={mockUser} handleLike={mockLikeHandle} />)
   })
 
   test('renders author and title', () => {
@@ -32,4 +34,16 @@ describe('Blog', () => {
 
     expect(component.container).toHaveTextContent('testing.com')
   })
+
+  test('Event handler is called twice when clicking like button twice', () => {
+    const button = component.getByText('view')
+    fireEvent.click(button)
+
+    const like = component.getByText('like')
+    fireEvent.click(like)
+    fireEvent.click(like)
+
+    expect(mockLikeHandle.mock.calls).toHaveLength(2)
+  })
+
 })
