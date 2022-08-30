@@ -29,7 +29,7 @@ const Blog = ({ blog, user, handleLike, handleRemove }) => {
   return (
     <div style={blogStyle}>
       {view === false ? (
-        <div>
+        <div className='blog'>
           {blog.title} {blog.author} <button onClick={toggleView}>view</button>
         </div>
       ) : (
