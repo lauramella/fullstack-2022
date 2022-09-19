@@ -22,6 +22,7 @@ const NewBlog = ({ handleCreate }) => {
           <input
             type="text"
             value={title}
+            aria-label='title'
             name="Title"
             onChange={({ target }) => setTitle(target.value)}
           />
@@ -31,6 +32,7 @@ const NewBlog = ({ handleCreate }) => {
           <input
             type="author"
             value={author}
+            aria-label='author'
             name="Author"
             onChange={({ target }) => setAuthor(target.value)}
           />
@@ -40,6 +42,7 @@ const NewBlog = ({ handleCreate }) => {
           <input
             type="url"
             value={url}
+            aria-label="url"
             name="Url"
             onChange={({ target }) => setUrl(target.value)}
           />
