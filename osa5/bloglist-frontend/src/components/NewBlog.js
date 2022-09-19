@@ -20,6 +20,7 @@ const NewBlog = ({ handleCreate }) => {
         <div>
           title
           <input
+            id='title'
             type="text"
             value={title}
             aria-label='title'
@@ -30,6 +31,7 @@ const NewBlog = ({ handleCreate }) => {
         <div>
           author
           <input
+            id='author'
             type="author"
             value={author}
             aria-label='author'
@@ -40,6 +42,7 @@ const NewBlog = ({ handleCreate }) => {
         <div>
           url
           <input
+            id='url'
             type="url"
             value={url}
             aria-label="url"
@@ -47,7 +50,9 @@ const NewBlog = ({ handleCreate }) => {
             onChange={({ target }) => setUrl(target.value)}
           />
         </div>
-        <button type="submit">create</button>
+        <button id='create-button' type="submit">
+          create
+        </button>
       </form>
     </div>
   )
