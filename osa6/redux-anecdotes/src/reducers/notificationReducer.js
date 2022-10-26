@@ -1,19 +1,25 @@
-const initialState = 'Just another notification!'
-
-const reducer = (state = initialState, action) => {
+const notificationReducer = (state = null, action) => {
   switch (action.type) {
-    case 'EDIT_NOTIFICATION':
+    case "ON":
       return action.data
+    case "OFF":
+      return null
     default:
       return state
   }
-}
+};
 
-export const editNotification = (content) => {
+export const notificationOn = (message) => {
   return {
-    type: 'EDIT_NOTIFICATION',
-    data: content,
+    type: "ON",
+    data: message,
   }
 }
 
-export default reducer
+export const notificationOff = () => {
+  return {
+    type: "OFF",
+  }
+}
+
+export default notificationReducer
